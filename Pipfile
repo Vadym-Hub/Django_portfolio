@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 django = "*"
+python-dotenv = "*"
 
 [dev-packages]
-python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
