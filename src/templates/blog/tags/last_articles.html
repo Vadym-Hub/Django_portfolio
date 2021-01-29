@@ -1,0 +1,20 @@
+
+<div class="widget latest-posts">
+<header>
+    <h3 class="h6">Последние статьи</h3>
+</header>
+<div class="blog-posts">
+    {% for article in last_articles %}
+    <a href="{{ article.get_absolute_url }}">
+        <div class="item d-flex align-items-center">
+        <div class="image"><img src="{{ article.poster.url }}" alt="..." class="img-fluid"></div>
+        <div class="title"><strong>{{ article.title }}</strong>
+            <div class="d-flex align-items-center">
+            <div class="comments"><i class="icon-comment"></i>{{ article.comment_count }}</div>
+            </div>
+        </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+</div>

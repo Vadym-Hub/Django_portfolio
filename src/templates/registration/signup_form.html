@@ -1,0 +1,36 @@
+{% extends 'accounts/_accounts_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Регистрация{% endblock title %}
+
+
+{% block accounts_content %}
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title text-center">Создайте аккаунт</h1>
+
+        <form action="." method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button  type="submit"  class="btn btn-primary btn-block">Создать аккаунт</button>
+        </form>
+        <p><a href="{% url 'accounts:login' %}">Уже есть аккаунт?</a></p>
+    </div>
+</div>
+{% endblock accounts_content %}}
+
+
+
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        # Set the chosen password
+        # user.set_password(form.cleaned_data['password'])
+        user.save()
+        # Create the user profile
+        Organisation.objects.create(
+            user=user,
+            is_organisor=True,
+            is_agent=False,
+        )
+
+        return super(SignupView, self).form_valid(form)

@@ -1,0 +1,16 @@
+{% extends 'blog/_blog_base.html' %}
+
+{% block title %}Удалить статью{% endblock title %}
+
+
+{% block blog_content %}
+<main class="post blog-post col-lg-8">
+  <div class="container">
+    <p>Вы уверенны, что хотите удалить "{{ object }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Confirm">
+    </form>
+  </div>
+</main>
+{% endblock blog_content %}

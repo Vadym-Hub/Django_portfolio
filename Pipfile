@@ -6,6 +6,11 @@ name = "pypi"
 [packages]
 django = "*"
 python-dotenv = "*"
+psycopg2 = "*"
+django-crispy-forms = "*"
+django-taggit = "*"
+pillow = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 

@@ -1,0 +1,13 @@
+{% extends 'blog/_blog_base.html' %}
+
+{% block title %}Редактировать статью{% endblock title %}
+
+
+{% block blog_content %}
+<div class="card col-8 mb-5 mt-5">
+  <div class="card-body">
+    <h1 class="card-title text-center">Отредактируйте статью</h1>
+    {% include '_include/_crispy_form.html' with button='Редактировать' %}
+  </div>
+</div>
+{% endblock blog_content %}

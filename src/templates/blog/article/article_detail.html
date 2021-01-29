@@ -1,0 +1,95 @@
+{% extends 'blog/_blog_base.html' %}
+{% load static %}
+
+
+{% block blog_content %}
+<style>
+  .post-body img {
+    width: 100%;
+  }
+</style>
+
+<main class="post blog-post col-lg-8">
+  <div class="container">
+    <div class="post-single">
+      <div class="post-thumbnail"><img src="{{ article.poster.url }}" alt="..." class="img-fluid"></div>
+      <div class="post-details">
+        <div class="post-meta d-flex justify-content-between">
+          <div class="category">
+            {% for cat in article.category.all %}
+            <a href="#">{{ cat }}</a>
+            {% endfor %}
+          </div>
+          {% if request.user.is_authenticated %}
+          <div>
+            <a href="{% url 'blog:article_edit' article.pk %}">Редактировать</a>
+            <a href="{% url 'blog:article_delete' article.pk %}">Удалить</a>
+          </div>
+          {% endif %}
+        </div>
+        <h1>{{ article.title }}<a href="#"><i class="fa fa-bookmark-o"></i></a></h1>
+        <div class="post-footer d-flex align-items-center flex-column flex-sm-row"><a href="#" class="author d-flex align-items-center flex-wrap">
+            <div class="avatar"><img src="{{ article.author.avatar.url }}" alt="..." class="img-fluid"></div>
+            <div class="title"><span>{{ article.author.username }}</span></div></a>
+          <div class="d-flex align-items-center flex-wrap">
+            <div class="date"><i class="icon-clock"></i>Добавлено: {{ article.publish|timesince }} назад</div>
+            <div class="comments meta-last"><i class="icon-comment"></i>Комментариев: {{ article.comment_count }}</div>
+          </div>
+        </div>
+        <div class="post-body">
+          {{ article.content}}
+        </div>
+        <div class="posts-nav d-flex justify-content-between align-items-stretch flex-column flex-md-row">
+        {% if article.previous_article %}
+        <a href="{{ article.previous_article.get_absolute_url }}" class="prev-post text-left d-flex align-items-center">
+            <div class="icon prev"><i class="fa fa-angle-left"></i></div>
+            <div class="text"><strong class="text-primary">Предыдущая статья</strong>
+              <h6>{{ article.previous_article.title }}</h6>
+            </div>
+        </a>
+        {% endif %}
+        {% if article.next_article %}
+        <a href="{{ article.next_article.get_absolute_url }}" class="next-post text-right d-flex align-items-center justify-content-end">
+            <div class="text"><strong class="text-primary">Следующая статья</strong>
+              <h6>{{ article.next_article.title }}</h6>
+            </div>
+            <div class="icon next"><i class="fa fa-angle-right">   </i></div>
+        </a>
+        {% endif %}
+        </div>
+      {% if article.allow_comments %}
+        <div class="post-comments">
+          <header>
+            <h3 class="h6">Комментарии к статье<span class="no-of-comments">({{ article.comments.count }})</span></h3>
+          </header>
+          {% for comment in article.get_comments %}
+          <div class="comment">
+            <div class="comment-header d-flex justify-content-between">
+              <div class="user d-flex align-items-center">
+                <div class="image">
+                  <img src="{{ comment.author.avatar.url }}" alt="..." class="img-fluid rounded-circle">
+                </div>
+                <div class="title"><strong>{{ comment.author.username }}</strong><span class="date">{{ comment.timestamp|timesince }} назад</span></div>
+              </div>
+            </div>
+            <div class="comment-body">
+              <p>{{ comment.content }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% if request.user.is_authenticated %}
+
+          {% include '_include/_crispy_form.html' with button='Оставить комментарий' title='Оставьте свой комментарий' %}
+
+        {% else %}
+          <a href="{% url 'accounts:login' %}" class="btn btn-primary">Авторизируйтесь, чтоб оставить коммент</a>
+        {% endif %}
+        </div>
+      {% else %}
+        <h4>Автор отключил комментарии к етой статье.</h4>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock blog_content %}

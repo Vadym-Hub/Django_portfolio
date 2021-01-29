@@ -1,0 +1,84 @@
+{% extends 'blog/_blog_base.html' %}
+{% load static %}
+
+{% block title %}Список статей{% endblock %}
+
+
+{% block blog_content %}
+<main class="posts-listing col-lg-8">
+  <div class="container">
+    <div class="row">
+      <!-- article -->
+      {% for article in article_list %}
+      <div class="post col-xl-6">
+        <div class="post-thumbnail"><a href="{{ article.get_absolute_url }}"><img src="{{ article.poster.url }}" alt="..." class="img-fluid"></a></div>
+        <div class="post-details">
+          <div class="post-meta d-flex justify-content-between">
+
+            <div class="category">
+            {% for cat in article.category.all %}
+            <a href="#">{{ cat }}</a>
+            {% endfor %}
+            </div>
+          </div><a href="{{ article.get_absolute_url }}">
+            <h3 class="h4">{{ article.title }}</h3></a>
+          <p class="text-muted">{{ article.description }}</p>
+          <footer class="post-footer d-flex align-items-center">
+            <a href="#" class="author d-flex align-items-center flex-wrap">
+              <div class="avatar"><img src="{{ article.author.avatar.url }}" alt="..." class="img-fluid"></div>
+              <div class="title"><span>{{ article.author.username }}</span></div>
+            </a>
+            <div class="date"><i class="icon-clock"></i>{{ article.publish|timesince }} назад</div>
+            <div class="comments meta-last"><i class="icon-comment"></i>{{ article.comment_count }}</div>
+          </footer>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-template d-flex justify-content-center ">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}"
+                                aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+
+                        </a>
+                        </li>
+                    {% endif %}
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page == page_obj.number %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#"> {{page}}
+                                    <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{page}}">
+                                    {{page}}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page={{ page_obj.paginator.num_pages }}"
+                                    aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+    {% endif %}
+  </div>
+</main>
+
+{% endblock blog_content %}

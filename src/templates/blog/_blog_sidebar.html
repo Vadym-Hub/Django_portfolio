@@ -1,0 +1,53 @@
+{% load blog_tags %}
+
+<aside class="col-lg-4">
+    <!--Поиск-->
+    <div class="widget search">
+        <header>
+            <h3 class="h6">Поиск по постам:</h3>
+        </header>
+        <form action="{% url 'blog:search' %}" class="search-form">
+            <div class="form-group">
+            <input type="text" name="q" placeholder="Что вас интересует?">
+            <button type="submit" class="submit"><i class="icon-search"></i></button>
+            </div>
+        </form>
+    </div>
+
+    <!--Навигация-->
+    <div class="widget categories">
+        <header>
+            <h3 class="h6">Навигация:</h3>
+        </header>
+
+        <div class="item">
+            <a href="{% url 'blog:article_list' %}">Все статьи</a>
+        </div>
+        {% if request.user.is_authenticated %}
+        <div class="item">
+            <a href="{% url 'blog:article_owner_list' %}">Мои публикации</a>
+        </div>
+        <div class="item">
+            <a href="{% url 'blog:article_create' %}">Написать статью</a>
+        </div>
+        {% endif %}
+        <div class="item">
+            <a href="{% url 'blog:article_feed' %}">RSS россылка</a>
+        </div>
+    </div>
+
+    <!-- Widget [Categories Widget]-->
+    <div class="widget categories">
+        <header>
+            <h3 class="h6">По категориям</h3>
+        </header>
+            {% get_categories as categories %}
+            {% for category in categories %}
+            <div class="item d-flex justify-content-between">
+                <a href="{% url 'blog:article_list_by_category' category.slug %}">{{ category.name }}</a><span>{{ category.article_set.count }}</span>
+            </div>
+            {% endfor %}
+    </div>
+    <!--Последние статьи-->
+    {% get_last_articles count=3 %}
+</aside>

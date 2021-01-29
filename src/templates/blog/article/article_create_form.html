@@ -1,0 +1,14 @@
+{% extends 'blog/_blog_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Создать статью{% endblock title %}
+
+
+{% block blog_content %}
+<div class="card col-8 mb-5 mt-5">
+  <div class="card-body">
+    <h1 class="card-title text-center">Написать новую статью</h1>
+    {% include '_include/_crispy_form.html' with button='Создать' %}
+  </div>
+</div>
+{% endblock blog_content %}

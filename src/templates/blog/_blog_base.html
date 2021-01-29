@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load blog_tags %}
+
+{% block title %}Блог{% endblock title %}
+
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
+<link rel="stylesheet" href="{% static 'vendor/@fancyapps/fancybox/jquery.fancybox.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/blog_css/style.default.css' %}" id="theme-stylesheet">
+<!--<link rel="stylesheet" href="{% static 'css/blog_css/custom.css' %}">-->
+<!--<link rel="stylesheet" href="{% static 'css/blog_css/github.css' %}">-->
+
+{% endblock css %}
+
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      {% block blog_content %}
+      {% endblock blog_content %}
+
+      {% include 'blog/_blog_sidebar.html' with most_recent=most_recent category_count=category_count %}
+    </div>
+  </div>
+{% endblock content %}
