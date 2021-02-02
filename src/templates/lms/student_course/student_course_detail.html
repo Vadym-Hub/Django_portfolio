@@ -1,0 +1,50 @@
+{% extends 'lms/_lms_base.html' %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+
+{% block lms_content %}
+<div id="doc-header" class="doc-header text-center">
+    <h1 class="doc-title"><span aria-hidden="true" ></span>{{ course.title }}</h1>
+    <div class="meta"><i class="fa fa-clock-o"></i> Обновлено: {{ course.updated }}</div>
+    <h5>Предмет: <a href="{% url 'lms:course_list_by_subject' course.subject.slug %}">{{ course.subject }}</a></h5>
+</div>
+<div class="doc-body">
+
+    <div class="doc-sidebar">
+      <nav id="doc-nav">
+        <h3>Модули</h3>
+        {% for m in course.modules.all %}
+          <ul id="doc-menu" class="nav doc-menu hidden-xs" data-spy="affix">
+            <li>
+                <a class="scrollto" href="#{{ m.order|add:1 }}">Модуль: {{ m.order|add:1 }}<br>{{ m.title }}</a>
+            </li>
+          </ul>
+        {% empty %}
+          <a>Модулей пока нет.</a>
+        {% endfor %}
+      </nav>
+    </div>
+
+
+    <div class="doc-content">
+        <div class="content-inner">
+        {% for module in course.modules.all %}
+
+          <section id="{{ module.order|add:1 }}" class="doc-section">
+            <h2 class="section-title">Модуль {{ module.order|add:1 }}: {{ module.title }}</h2>
+              {% for content in module.contents.all %}
+                {% with item=content.item %}
+                    <div class="section-block">
+                        <h3 class="block-title">{{ item.title }}</h3>
+                        <p>{{ item.render }}</p>
+                    </div>
+                {% endwith %}
+              {% endfor %}
+          </section>
+
+        {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock lms_content %}

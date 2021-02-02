@@ -36,6 +36,8 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     # 1 URL для CRM.
     path('crm/',  include('crm.urls')),
+    # 1 URL для LRM.
+    path('lms/', include('lms.urls')),
 ]
 
 

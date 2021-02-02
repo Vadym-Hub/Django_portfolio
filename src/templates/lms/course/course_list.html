@@ -1,0 +1,37 @@
+{% extends 'lms/_lms_base.html' %}
+{% load static %}
+
+{% block title %}Список курсов{% endblock %}
+
+
+{% block lms_content %}
+<div class="page-wrapper">
+    <section class="cards-section text-center">
+        <div class="container">
+            <div id="cards-wrapper" class="cards-wrapper row">
+                {% for course in courses %}
+                <div class="item item-blue col-md-4 col-sm-6 col-xs-6">
+                    <div class="item-inner">
+                        <div class="icon-holder">
+                            <span aria-hidden="true" class="icon icon_datareport_alt"></span>
+                        </div><!--//icon-holder-->
+                        <h3 class="title">
+                            <a href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+                        </h3>
+                        <p class="intro">Предмет:
+                            <a href="{% url 'lms:course_list_by_subject' course.subject.slug %}">{{ course.subject.title }}</a>
+                            Количество модулей: {{ course.modules.count }}
+                        </p>
+                        <p>
+                            Инструктор: {{ course.owner.get_full_name }}
+                        </p>
+                        <a class="link" href="{{ course.get_absolute_url }}"><span></span></a>
+                    </div><!--//item-inner-->
+                </div><!--//item-->
+                {% endfor %}
+            </div><!--//cards-->
+        </div><!--//container-->
+    </section><!--//cards-section-->
+</div><!--//page-wrapper-->
+
+{% endblock lms_content %}

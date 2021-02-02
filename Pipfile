@@ -11,6 +11,7 @@ django-crispy-forms = "*"
 django-taggit = "*"
 pillow = "*"
 django-ckeditor = "*"
+django-embed-video = "*"
 
 [dev-packages]
 

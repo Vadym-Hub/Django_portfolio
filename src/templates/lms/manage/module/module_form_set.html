@@ -1,0 +1,22 @@
+{% extends 'lms/_lms_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Редактировать "{{ course.title }}"{% endblock %}
+
+
+{% block lms_content %}
+<div class="card col-8 mb-5 mt-5">
+  <div class="card-body">
+    <h1 class="card-title ">Редактировать "{{ course.title }}"</h1>
+    <div class="container">
+      <h2>Модули курса</h2>
+      <form action="" method="post">
+        {{ formset|crispy }}
+        {{ formset.management_form }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary"> Сохоанить модули</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock lms_content %}

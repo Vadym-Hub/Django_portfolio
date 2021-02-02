@@ -11,11 +11,6 @@ class SearchForm(forms.Form):
 
 
 class ArticleForm(forms.ModelForm):
-    # content = forms.CharField(
-    #     widget=TinyMCEWidget(
-    #         attrs={'required': False, 'cols': 30, 'rows': 10}
-    #     )
-    # )
 
     class Meta:
         model = Article
@@ -24,12 +19,6 @@ class ArticleForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    # content = forms.CharField(widget=forms.Textarea(attrs={
-    #     'class': 'form-control',
-    #     'placeholder': 'Поле для комментария',
-    #     'id': 'usercomment',
-    #     'rows': '4'
-    # }))
 
     class Meta:
         model = Comment

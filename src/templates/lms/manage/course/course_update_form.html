@@ -1,0 +1,13 @@
+{% extends 'lms/_lms_base.html' %}
+
+{% block title %}Обновить Курс{% endblock title %}
+
+
+{% block lms_content %}
+<div class="card col-8 mb-5 mt-5">
+  <div class="card-body">
+    <h1 class="card-title text-center">Обновить курс</h1>
+    {% include '_include/_crispy_form.html' with button='Обновить' %}
+  </div>
+</div>
+{% endblock lms_content %}

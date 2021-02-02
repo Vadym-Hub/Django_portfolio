@@ -3,7 +3,8 @@ from .models import Train
 
 
 def dfs_paths(graph, start, goal):
-    """Функция поиска всех возможных маршрутов
+    """
+    Функция поиска всех возможных маршрутов
     из одного города в другой. Вариант посещения
     одного и того же города более одного раза,
     не рассматривается.
@@ -20,7 +21,9 @@ def dfs_paths(graph, start, goal):
 
 
 def get_graph(_qs):
-    """Функция по творенню графа из БД по розкладу руху поїздів."""
+    """
+    Функция по творенню графа из БД по розкладу руху поездов.
+    """
     qs = _qs.values()
     graph = {}
     for q in qs:
@@ -30,7 +33,9 @@ def get_graph(_qs):
 
 
 def get_routes(request, form) -> dict:
-    """Функция поиска маршрута."""
+    """
+    Функция поиска маршрута.
+    """
     context = {'form': form}
     qs = Train.objects.all().select_related('from_city', 'to_city')
     graph = get_graph(qs)

@@ -1,0 +1,16 @@
+{% extends 'lms/_lms_base.html' %}
+
+{% block title %}Удалить курс{% endblock %}
+
+
+{% block lms_content %}
+<h1 class="text-center my-4">Удалить курс "{{ object.title }}"?</h1>
+
+<div class="module text-center">
+  <form action="" method="post">
+    {% csrf_token %}
+    <p>Вы уверенны, что хотите удалить "{{ object.title }}"?</p>
+    <input type="submit" class="btn btn-danger" value="Подтвердить">
+  </form>
+</div>
+{% endblock lms_content %}

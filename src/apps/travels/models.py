@@ -3,7 +3,9 @@ from django.core.exceptions import ValidationError
 
 
 class City(models.Model):
-    """Модель города."""
+    """
+    Модель города.
+    """
     name = models.CharField(
         max_length=100, unique=True, verbose_name='город'
     )
@@ -18,7 +20,9 @@ class City(models.Model):
 
 
 class Train(models.Model):
-    """Модель поезда."""
+    """
+    Модель поезда.
+    """
     name = models.CharField(
         max_length=50, unique=True, verbose_name='номер поезда'
     )
@@ -59,7 +63,9 @@ class Train(models.Model):
 
 
 class Route(models.Model):
-    """Модель маршрута."""
+    """
+    Модель маршрута.
+    """
     name = models.CharField(
         max_length=50, unique=True, verbose_name='название маршрута'
     )

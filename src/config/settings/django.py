@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'travels.apps.TravelsConfig',  # Путешественник.
     'products.apps.ProductsConfig',  # Приложение с товарами.
     'orders.apps.OrdersConfig',  # Проложение для хранения корзыны и заказов.
-    'crm.apps.CrmConfig',  # Система управления взаимоотношениями с клиентами
+    'crm.apps.CrmConfig',  # (CRM) Система управления взаимоотношениями с клиентами.
+    'lms.apps.LmsConfig',  # (LMS) Система управления обучением.
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,6 +58,7 @@ INSTALLED_APPS = [
     'taggit',  # Подсистема тегов (удалить)
     'ckeditor',
     'ckeditor_uploader',
+    'embed_video',  # Для видео.
 ]
 
 MIDDLEWARE = [

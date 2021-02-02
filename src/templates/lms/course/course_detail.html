@@ -1,0 +1,32 @@
+{% extends 'lms/_lms_base.html' %}
+
+{% block title %}Список курсов{% endblock %}
+
+
+{% block lms_content %}
+<div id="doc-header" class="doc-header text-center">
+    <h1 class="doc-title"><span aria-hidden="true" ></span>{{ course.title }}</h1>
+    <div class="meta"><i class="fa fa-clock-o"></i> Обновлено: {{ course.updated }}</div>
+    <h5>Предмет: <a href="{% url 'lms:course_list_by_subject' course.subject.slug %}">{{ course.subject }}</a></h5>
+</div>
+<div class="jumbotron">
+    <h1 class="text-center">Описание курса:</h1>
+    <p>{{ course.overview }}</p>
+    <p>Количество модулей: {{ course.modules.count }}</p>
+    <p>Инструктор: {{ course.owner.get_full_name }}</p>
+
+
+    {% if request.user.is_authenticated %}
+      <form action="{% url 'lms:enroll_to_course' %}" method="post">
+        {{ enroll_form }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Записаться на курс</button>
+      </form>
+    {% else %}
+        <a href="{% url 'lms:signup' %}" class="button">
+          Зарегистрируйтесь, чтобы записаться на курс
+        </a>
+    {% endif %}
+</div>
+
+{% endblock lms_content %}

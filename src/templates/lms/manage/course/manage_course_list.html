@@ -1,0 +1,45 @@
+{% extends 'lms/_lms_base.html' %}
+
+{% block title %}Менеджер{% endblock %}
+
+
+{% block lms_content %}
+<h1 class="text-center my-4">Менеджер курсов</h1>
+<a href="{% url 'lms:course_owner_create' %}" class="btn btn-primary btn-lg btn-block">Создать новый курс</a>
+
+<div class="page-wrapper">
+    <section class="cards-section text-center">
+        <div class="container">
+            <div id="cards-wrapper" class="cards-wrapper row">
+                {% for course in course_list %}
+                <div class="item item-blue col-md-6 col-sm-6 col-xs-6">
+                    <div class="item-inner">
+                        <div class="icon-holder">
+                            <span aria-hidden="true" class="icon icon_datareport_alt"></span>
+                        </div><!--//icon-holder-->
+                        <h3 >
+                            Превю: <a href="{{ course.get_absolute_url }}">{{ course.title }}</a>
+                        </h3>
+                        <p class="intro">Предмет:
+                            <a href="{% url 'lms:course_list_by_subject' course.subject.slug %}">{{ course.subject.title }}</a>
+
+                        </p>
+                        <p class="intro">Количество модулей: {{ course.modules.count }}</p>
+                        <p>
+                          <a href="{% url 'lms:course_owner_update' course.id %}" class="btn btn-primary btn-block">Редактировать курс</a>
+                          <a href="{% url 'lms:module_edit' course.id %}" class="btn btn-primary btn-block">Редактировать модули</a>
+                          <a href="{% url 'lms:course_owner_delete' course.id %}" class="btn btn-danger btn-block">Удалить курс</a>
+                          {% if course.modules.count > 0 %}
+                            <a href="{% url 'lms:module_content_list' course.modules.first.id %}" class="btn btn-info btn-block">Управление контентом</a>
+                          {% endif %}
+                        </p>
+                    </div><!--//item-inner-->
+                </div><!--//item-->
+                {% empty %}
+                  <p>У вас пока нет созданных курсов.</p>
+                {% endfor %}
+            </div><!--//cards-->
+        </div><!--//container-->
+    </section><!--//cards-section-->
+</div><!--//page-wrapper-->
+{% endblock lms_content %}
