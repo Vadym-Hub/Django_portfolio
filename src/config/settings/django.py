@@ -18,6 +18,11 @@ DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')
 DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
+# Email.
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',  # Проложение для хранения корзыны и заказов.
     'crm.apps.CrmConfig',  # (CRM) Система управления взаимоотношениями с клиентами.
     'lms.apps.LmsConfig',  # (LMS) Система управления обучением.
+    'scraping.apps.ScrapingConfig',  # Сервис для скрапинга вакансий по ЯП.
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -181,3 +187,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Настройки email для локальной розработки.
 # Выводит сообщения в консоль
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = EMAIL_HOST
+EMAIL_USE_TLS = True
+EMAIL_PORT = EMAIL_PORT
+EMAIL_HOST_USER = EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD

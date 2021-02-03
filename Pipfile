@@ -13,6 +13,7 @@ pillow = "*"
 django-ckeditor = "*"
 django-embed-video = "*"
 djangorestframework = "*"
+beautifulsoup4 = "*"
 
 [dev-packages]
 
