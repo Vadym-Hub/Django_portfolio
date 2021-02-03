@@ -1,0 +1,13 @@
+{% extends 'scraping/_scraping_base.html' %}
+
+
+{% block scraping_content %}
+  <div class="row ">
+    <div class="col-md-8 mx-auto my-2">
+        <form method="post">{% csrf_token %}
+            <p>{{object}}</p>
+            <input type="submit" value="Delete?">
+        </form>
+    </div>
+  </div>
+{% endblock scraping_content %}

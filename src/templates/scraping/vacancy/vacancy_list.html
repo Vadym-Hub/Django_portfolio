@@ -1,0 +1,33 @@
+{% extends 'scraping/_scraping_base.html' %}
+
+
+{% block scraping_content %}
+{% if vacancy_list %}
+ <h3 class="my-4 text-center">Результаты поиска согласно Вашего запроса.</h3>
+    {% for vacancy in  vacancy_list %}
+        <div class="card my-3">
+          <h5 class="card-header"><a href="{{ vacancy.url }}">{{ vacancy.title }}</a></h5>
+          <div class="card-body">
+             <p class="card-text">{{ vacancy.description }}</p>
+              <p><strong>{{ vacancy.company }}</strong></p>
+              <p>{{ vacancy.city.name }} | {{ vacancy.language.name }} |
+                  <small>{{ vacancy.timestamp|date:"d-m-Y" }}</small></p>
+          </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <h3 class="my-4 text-center">К сожалению, по Вашему запросу, ничего не найдено.</h3>
+{% endif %}
+
+<div class="row ">
+    <div class="col-md-6 mx-auto my-3">
+        <h4 class="my-4 text-center">Новый поиск</h4>
+    <form method="GET" action="{% url 'scraping:vacancy_list' %}">
+        <div class="form-group">
+        {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Найти</button>
+    </form>
+    </div>
+</div>
+{% endblock scraping_content %}
