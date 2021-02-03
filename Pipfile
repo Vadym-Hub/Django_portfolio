@@ -12,6 +12,7 @@ django-taggit = "*"
 pillow = "*"
 django-ckeditor = "*"
 django-embed-video = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

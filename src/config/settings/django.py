@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'embed_video',  # Для видео.
+    'rest_framework',  # Для REST API.
 ]
 
 MIDDLEWARE = [

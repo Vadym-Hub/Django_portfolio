@@ -38,6 +38,8 @@ urlpatterns = [
     path('crm/',  include('crm.urls')),
     # 1 URL для LRM.
     path('lms/', include('lms.urls')),
+
+    path('api_lms/v1/', include('lms.api.urls')),
 ]
 
 
