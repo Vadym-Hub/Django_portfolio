@@ -1,22 +1,23 @@
-version: '3.9'
+version: '3.8'
 
 services:
   web:
     build: .
-    command: python /code/src/manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/code
+      - .:/code/src
     ports:
       - 8000:8000
     depends_on:
       - db
-
+    env_file:
+      - ./.env
   db:
     image: postgres:11
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    environment:
-      - "POSTGRES_HOST_AUTH_METHOD=trust"
+      - portfolio_postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
 
 volumes:
-  postgres_data:
+  portfolio_postgres_data:

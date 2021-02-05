@@ -1,4 +1,21 @@
 
-/.idea
-/.env
+db.sqlite3
 /src/db.sqlite3
+
+venv
+
+/.idea
+
+__pycache__/
+*/__pycache__/
+*.py[cod]
+/pyc
+*/pyc
+
+/.env
+/.env.dev
+/.env.prod
+/.env.prod.db
+
+!/src/media/.gitkeep
+/src/media/*
