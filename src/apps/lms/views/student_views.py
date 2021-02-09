@@ -11,6 +11,9 @@ from ..forms import CourseEnrollForm
 
 
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
+    """
+    Обработчик записи студента на курс.
+    """
     course = None
     form_class = CourseEnrollForm
 
@@ -24,10 +27,17 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
 
 
 class StudentCourseListView(LoginEndIsEnrollToCourseMixin, ListView):
+    """
+    Обработчик для вывода курсов, на которые записан студент.
+    """
     model = Course
     template_name = 'lms/student_course/student_course_list.html'
+    paginate_by = 10
 
 
 class StudentCourseDetailView(LoginEndIsEnrollToCourseMixin, DetailView):
+    """
+    Обработчик для вывода деталей курса, на который записан студент.
+    """
     model = Course
     template_name = 'lms/student_course/student_course_detail.html'

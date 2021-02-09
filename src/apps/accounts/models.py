@@ -23,7 +23,7 @@ class User(AbstractUser):
         },
     )
     email = models.EmailField(_('email address'))
-    avatar = models.ImageField('аватарка', upload_to='user/avatar/', blank=True, null=True)
+    avatar = models.ImageField('аватар профиля', upload_to='user/avatar/')
     # Для работы app CRM.
     is_organisor = models.BooleanField(default=True, verbose_name='является ли главой организации crm')
     is_agent = models.BooleanField(default=False, verbose_name='является ли агентом crm')

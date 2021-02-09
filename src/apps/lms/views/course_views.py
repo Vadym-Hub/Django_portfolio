@@ -51,6 +51,7 @@ class ManageCourseListView(LoginEndIsOwnerCourseMixin, generic.ListView):
     template_name = 'lms/manage/course/manage_course_list.html'
     permission_required = 'lms.view_course'
     success_url = reverse_lazy('lms:manage_course_list')
+    paginate_by = 12
 
 
 class CourseOwnerCreateView(LoginEndIsOwnerCourseMixin, generic.CreateView):

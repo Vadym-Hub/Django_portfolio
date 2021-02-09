@@ -43,7 +43,7 @@ class AgentCreateView(OrganisorAndLoginRequiredMixin, AgentInOrganisationMixin, 
             message='Вас добавлено в систему CRM. '
                     f'Ваш никнейм: "{user.username}" пароль: "{self.random_password}".'
                     'Пожалуйста, пройдите авторизацию, чтобы начать работать.',
-            from_email='admin@test.com',  # если не указать используется DEFAULT_FORM_EMAIL setting.
+            # from_email='admin@test.com',  # если не указать используется DEFAULT_FORM_EMAIL setting.
             recipient_list=[user.email]  # Куда отправить.
         )
         return super(AgentCreateView, self).form_valid(form)

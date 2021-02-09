@@ -15,7 +15,7 @@ class ArticleListView(generic.ListView):
     """
     template_name = 'blog/article/article_list.html'
 
-    paginate_by = 4
+    paginate_by = 6
 
     def get_queryset(self):
         category_slug = self.kwargs.get('category_slug', None)
