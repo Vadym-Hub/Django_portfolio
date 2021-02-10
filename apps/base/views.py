@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class HomePageTemplateView(TemplateView):
+    """
+    Обработчик вывода базоврй страницы с инфо о проекте.
+    """
+    template_name = 'base/home.html'
