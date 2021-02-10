@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',  # Чтоб крутить статику на деплое.
     'django.contrib.staticfiles',
 
     # Third-party
@@ -73,13 +74,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Чтоб крутить статику на деплое.
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Чтоб крутить статику на деплое.
     'debug_toolbar.middleware.DebugToolbarMiddleware',  # Для тулбара.
 ]
 
@@ -185,6 +186,8 @@ AUTHENTICATION_BACKENDS = (
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # new
 
 
 MEDIA_URL = '/media/'
