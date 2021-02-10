@@ -3,7 +3,7 @@ version: '3.8'
 services:
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn config.wsgi -b 0.0.0.0:8000
     volumes:
       - .:/code
     ports:
@@ -17,9 +17,7 @@ services:
     volumes:
       - portfolio_postgres_data:/var/lib/postgresql/data/
     environment:
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
 
 volumes:
   portfolio_postgres_data:

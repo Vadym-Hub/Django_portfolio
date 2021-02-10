@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',  # Чтоб крутить статику на деплое.
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # Third-party
@@ -126,9 +126,14 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+#
+# db = dj_database_url.config()
+# DATABASES['default'].update(db)
 
-db = dj_database_url.config()
-DATABASES['default'].update(db)
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -184,10 +189,10 @@ AUTHENTICATION_BACKENDS = (
 
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static', ]
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # new
 
 
 MEDIA_URL = '/media/'
