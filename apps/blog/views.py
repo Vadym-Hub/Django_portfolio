@@ -69,6 +69,13 @@ class ArticleCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = ArticleForm
     template_name = 'blog/article/article_create_form.html'
 
+    def form_valid(self, form):
+        """
+        Метод автоматически заполняет  поле author сохраняемого объекта.
+        """
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 
 class ArticleUpdateView(AuthorAndLoginRequiredMixin, generic.UpdateView):
     """
