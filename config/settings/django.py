@@ -28,7 +28,7 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Добавлен один уровень .parent.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Добавлен один уровень .parent для розделения settings.py
 sys.path.append(str(BASE_DIR / 'apps'))  # Чтоб все приложения складывать в папку apps.
 
 
@@ -45,7 +45,7 @@ ALLOWED_HOSTS = ['pashynskyi.herokuapp.com', 'localhost', '127.0.0.1']
 INSTALLED_APPS = [
     # Local
     'accounts.apps.AccountsConfig',  # Кастомная админка.
-    'main.apps.MainConfig',  # Приложение для общего барахла.
+    'base.apps.BaseConfig',  # Приложение для общего барахла.
     'blog.apps.BlogConfig',  # Блог.
     'travels.apps.TravelsConfig',  # Путешественник.
     'products.apps.ProductsConfig',  # Приложение с товарами.

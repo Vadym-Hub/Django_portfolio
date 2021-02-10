@@ -16,8 +16,10 @@ services:
     image: postgres:11
     volumes:
       - portfolio_postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - ./.env
+    environment:
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
 
 volumes:
   portfolio_postgres_data:
