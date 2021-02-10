@@ -12,7 +12,7 @@ load_dotenv()
 
 # Django переменные.
 SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG")
+DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 # PostgreSQL.
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_DATABASE")
