@@ -18,6 +18,9 @@ gunicorn = "*"
 whitenoise = "*"
 dj-database-url = "*"
 django-debug-toolbar = "*"
+boto3 = "*"
+django-storages = "*"
+django-heroku = "*"
 
 [dev-packages]
 
