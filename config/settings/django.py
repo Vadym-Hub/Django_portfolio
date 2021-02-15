@@ -19,12 +19,16 @@ DB_NAME = os.getenv("DB_DATABASE")
 DB_USER = os.getenv("DB_USER")
 DB_PORT = os.getenv("DB_PORT")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
-
 # Email.
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
+# AWS_S3 storages.
+USE_AWS_S3 = bool(int(os.environ.get('USE_AWS_S3', default=0)))
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +41,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['pashynskyi.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -59,7 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',  # Чтоб крутить статику на деплое.
+    # 'whitenoise.runserver_nostatic',  # Чтоб крутить статику на деплое.
     'django.contrib.staticfiles',
 
     # Third-party
@@ -70,11 +74,12 @@ INSTALLED_APPS = [
     'embed_video',  # Для видео.
     'rest_framework',  # Для REST API.
     'debug_toolbar',
+    'storages',  # Чтоб крутить статику и медиа на Amazon S3.
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Чтоб крутить статику на деплое.
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # Чтоб крутить статику на деплое.
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,15 +125,15 @@ DATABASES = {
     }
 }
 
+db = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db)
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-db = dj_database_url.config()
-DATABASES['default'].update(db)
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -183,15 +188,13 @@ AUTHENTICATION_BACKENDS = (
 # ________________________________________________________________
 
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static', ]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # new
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static', ]
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+#
+#
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Настройки email.
@@ -201,3 +204,85 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = EMAIL_PORT
 EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
+
+# ___________________________________________________________________________
+# USE_AWS_S3 = USE_AWS_S3
+
+# if USE_AWS_S3:
+#     # aws settings
+#     AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+#     AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+#     AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+#     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+#     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400', }
+#     # s3 static settings
+#     AWS_LOCATION = 'static'
+#     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+#     # s3 media settings
+#     DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'  # 'storages.backends.s3boto3.S3Boto3Storage'
+# else:
+#     STATIC_URL = '/static/'
+#     STATIC_ROOT = BASE_DIR / 'staticfiles'
+#     MEDIA_URL = '/media/'
+#     MEDIA_ROOT = BASE_DIR / 'media'
+#
+# STATICFILES_DIRS = [BASE_DIR / 'static', ]
+
+
+# S3 BUCKETS CONFIG
+# STATIC_URL = '/static/'
+#
+# MEDIA_URL = '/media/'
+#
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+#
+# MEDIA_ROOT = BASE_DIR / 'media'
+#
+#
+# AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+# AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+# AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+# STATICFILES_DIRS = [BASE_DIR / 'static', ]
+#
+# AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+# AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+# AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+#
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+#
+# AWS_LOCATION = 'static'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+#
+# DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+
+
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
+AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+AWS_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+AWS_DEFAULT_ACL = None
+AWS_S3_REGION_NAME = 'us-east-2'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+STATIC_URL = AWS_URL + '/static/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = AWS_URL + '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+import django_heroku
+django_heroku.settigns(locals(), staticfiles=False)
