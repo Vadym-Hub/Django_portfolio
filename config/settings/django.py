@@ -6,6 +6,8 @@ import sys
 import dj_database_url
 
 from pathlib import Path
+
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -285,4 +287,5 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
 import django_heroku
-django_heroku.settigns(locals(), staticfiles=False)
+
+django_heroku.settings(locals(), staticfiles=False)
