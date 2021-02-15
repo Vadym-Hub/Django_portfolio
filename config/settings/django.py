@@ -3,7 +3,6 @@ Django  3.1.4. settings for config project.
 """
 import os
 import sys
-import dj_database_url
 
 from pathlib import Path
 
@@ -65,7 +64,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    # 'whitenoise.runserver_nostatic',  # Чтоб крутить статику на деплое.
     'django.contrib.staticfiles',
 
     # Third-party
@@ -81,7 +79,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',  # Чтоб крутить статику на деплое.
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -127,6 +124,7 @@ DATABASES = {
     }
 }
 
+import dj_database_url
 db = dj_database_url.config(conn_max_age=600, ssl_require=True)
 DATABASES['default'].update(db)
 
@@ -187,16 +185,6 @@ AUTHENTICATION_BACKENDS = (
     # 'social_core.backends.facebook.FacebookOAuth2',  # Аутентификация через facebook
     # 'social_core.backends.google.GoogleOAuth2',  # Аутентификация через Google
 )
-# ________________________________________________________________
-
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [BASE_DIR / 'static', ]
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
-#
-#
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Настройки email.
@@ -216,14 +204,13 @@ if USE_AWS_S3:
     AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
     AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400', }
+    AWS_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
     # s3 static settings
-    AWS_LOCATION = 'static'
+    STATIC_URL = AWS_URL + '/static/'
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
     # s3 media settings
-    DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'  # 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = AWS_URL + '/media/'
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 else:
     STATIC_URL = '/static/'
     STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -233,22 +220,6 @@ else:
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 
 
-# AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
-# AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
-# AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
-# AWS_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
-# AWS_DEFAULT_ACL = None
-# AWS_S3_REGION_NAME = 'us-east-2'
-# AWS_S3_SIGNATURE_VERSION = 's3v4'
-#
-# STATIC_URL = AWS_URL + '/static/'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# MEDIA_URL = AWS_URL + '/media/'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-#
-# STATICFILES_DIRS = [BASE_DIR / 'static', ]
-
-
+# Настройки для деплоя на heroku (staticfiles=False нужен для AWS_S3)
 import django_heroku
-
 django_heroku.settings(locals(), staticfiles=False)
