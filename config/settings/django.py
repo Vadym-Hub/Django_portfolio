@@ -196,7 +196,7 @@ EMAIL_HOST_USER = EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
 
-# ___________________________________________________________________________
+# Настройки для статики_______________________________________________
 USE_AWS_S3 = USE_AWS_S3
 
 if USE_AWS_S3:
@@ -219,6 +219,7 @@ else:
     MEDIA_ROOT = BASE_DIR / 'media'
 
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
+# ___________________________________________________________________
 
 
 # Настройки для деплоя на heroku (staticfiles=False нужен для AWS_S3)
