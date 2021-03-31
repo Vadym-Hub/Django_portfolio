@@ -20,6 +20,10 @@ django-debug-toolbar = "*"
 boto3 = "*"
 django-storages = "*"
 django-heroku = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+drf-yasg = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 

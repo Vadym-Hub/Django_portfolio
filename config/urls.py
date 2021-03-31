@@ -42,8 +42,12 @@ urlpatterns = [
     # 1 URL для scraping.
     path('scraping/', include('scraping.urls')),
 
+    path('api-auth/', include('rest_framework.urls')),
+    # path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
 
-    path('api_lms/v1/', include('lms.api.urls')),
+
+    path('api/v1/', include('routers')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

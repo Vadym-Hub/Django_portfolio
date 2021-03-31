@@ -1,25 +1,27 @@
-version: '3.8'
+version: "3.9"
 
 services:
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build: ./
+    command: >
+      sh -c "python3 manage.py migrate &&
+             python3 manage.py runserver 0.0.0.0:8000"
     volumes:
-      - .:/code
+      - .:/usr/src/app/
     ports:
       - 8000:8000
-    depends_on:
-      - db
     env_file:
       - ./.env
+    depends_on:
+      - db
   db:
-    image: postgres:11
+    image: postgres:12.0-alpine
+    env_file:
+      - ./.env
     volumes:
       - portfolio_postgres_data:/var/lib/postgresql/data/
-    environment:
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
+    ports:
+      - 5432:5432
 
 volumes:
   portfolio_postgres_data:
