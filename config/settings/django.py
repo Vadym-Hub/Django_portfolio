@@ -11,46 +11,29 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# Django переменные.
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
-# PostgreSQL.
-DB_HOST = os.getenv("DB_HOST")
-DB_NAME = os.getenv("DB_DATABASE")
-DB_USER = os.getenv("DB_USER")
-DB_PORT = os.getenv("DB_PORT")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-# Email.
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = os.getenv("EMAIL_PORT")
-# AWS_S3 storages.
-USE_AWS_S3 = bool(int(os.environ.get('USE_AWS_S3', default=0)))
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent  # Добавлен один уровень .parent для розделения settings.py
 sys.path.append(str(BASE_DIR / 'apps'))  # Чтоб все приложения складывать в папку apps.
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_KEY
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG
+DEBUG = bool(int(os.environ.get("DEBUG", default=0)))
 
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+# ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-
 INSTALLED_APPS = [
     # Local
     'accounts.apps.AccountsConfig',  # Кастомная админка.
     'base.apps.BaseConfig',  # Приложение для общего барахла.
+    'posts.apps.PostsConfig',  # Приложение для постов пользователя.
+    'followers.apps.FollowersConfig',  # Подписчики.
+    'feeds.apps.FeedsConfig',  # Отбор контента для ленты.
     'blog.apps.BlogConfig',  # Блог.
     'travels.apps.TravelsConfig',  # Путешественник.
     'products.apps.ProductsConfig',  # Приложение с товарами.
@@ -72,7 +55,13 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'embed_video',  # Для видео.
+    'mptt',  # Для построения древовидных моделей(например вложенные комментарии).
+    'djoser',  # For user registration and authentication endpoints.
     'rest_framework',  # Для REST API.
+    'rest_framework_simplejwt',  # JWT authentication backend library.
+    'drf_yasg',  # Для автодокументации API.
+    'corsheaders',  # Для  управления CORS.
+
     'debug_toolbar',
     'storages',  # Чтоб крутить статику и медиа на Amazon S3.
 ]
@@ -80,6 +69,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Для corsheaders.
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -113,27 +103,54 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
+#         'USER': os.environ.get('DB_USER', 'user'),
+#         'PASSWORD': os.environ.get('DB_PASSWORD', 'password'),
+#         'HOST': os.environ.get('DB_HOST', 'localhost'),
+#         'PORT': os.environ.get('DB_PORT', '5432'),
+#     }
+# }
 
-import dj_database_url
-db = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db)
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': os.environ.get('POSTGRES_ENGINE', 'django.db.backends.sqlite3'),
+#         'NAME': os.environ.get('POSTGRES_DB', BASE_DIR / 'db.sqlite3'),
+#         'USER': os.environ.get('POSTGRES_USER', 'user'),
+#         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'password'),
+#         'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+#         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
 #     }
 # }
+#
+# import dj_database_url
+# db = dj_database_url.config(conn_max_age=600, ssl_require=True)
+# DATABASES['default'].update(db)
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'db',  # set in docker-compose.yml
+#         'PORT': 5432  # default postgres port
+#     }
+# }
+
+DATABASES = {
+    "default": {
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / 'db.sqlite3'),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -188,21 +205,23 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Настройки email.
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = EMAIL_HOST
-EMAIL_USE_TLS = True
-EMAIL_PORT = EMAIL_PORT
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", None)
+EMAIL_USE_TLS = bool(int(os.environ.get("DEBUG", default=1)))
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
+EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
 
 # Настройки для статики_______________________________________________
-USE_AWS_S3 = USE_AWS_S3
+USE_AWS_S3 = bool(int(os.environ.get('USE_AWS_S3', default=0)))
 
 if USE_AWS_S3:
-    AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY_ID
-    AWS_SECRET_ACCESS_KEY = AWS_SECRET_ACCESS_KEY
-    AWS_STORAGE_BUCKET_NAME = AWS_STORAGE_BUCKET_NAME
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', None)
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', None)
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', None)
     AWS_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
     AWS_DEFAULT_ACL = None
     AWS_S3_REGION_NAME = 'us-east-2'

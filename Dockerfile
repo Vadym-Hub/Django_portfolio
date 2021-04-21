@@ -1,16 +1,23 @@
-# Pull base image
-FROM python:3.8
+FROM python:3.8.3
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set work directory
-WORKDIR /code
+WORKDIR /usr/src/app
+
+# install psycopg2 dependencies
+RUN apt-get update \
+    && apt-get install netcat -y
+RUN apt-get upgrade -y && apt-get install postgresql gcc python3-dev musl-dev -y
 
 # Install dependencies
-COPY Pipfile Pipfile.lock /code/
-RUN pip install pipenv && pipenv install --system
+RUN pip install --upgrade pip
+RUN pip install pipenv
+COPY Pipfile Pipfile.lock /usr/src/app/
+RUN pipenv install --system
 
-# Copy project
-COPY . /code/
+# copy project
+COPY . /usr/src/app/
+

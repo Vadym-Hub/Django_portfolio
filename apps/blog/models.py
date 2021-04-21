@@ -101,12 +101,12 @@ class Comment(models.Model):
         Article,
         on_delete=models.CASCADE,
         related_name='comments',
-        verbose_name='статья',
+        verbose_name='статья'
     )
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name='автор комментария',
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE
     )
     content = models.TextField('содержание')
     timestamp = models.DateTimeField('время', auto_now_add=True)
