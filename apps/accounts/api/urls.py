@@ -1,8 +1,18 @@
 from django.urls import path
+from rest_framework import routers
+
 from . import views
 
 
+router = routers.DefaultRouter()
+router.register('profiles', views.ProfileViewSet)
+# router.register('groups', views.GroupViewSet, basename='groups')
+
+
 urlpatterns = [
-    path('profile/<int:pk>/', views.ProfileViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
-    path('<int:pk>/', views.ProfilePublicReadOnlyModelViewSet.as_view({'get': 'retrieve'})),
+
+    path('profiles/avatar/', views.ProfileAvatarAPIView.as_view()),
+
 ]
+
+urlpatterns += router.urls

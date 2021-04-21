@@ -1,5 +1,8 @@
 from django.db import models
 
+# from mptt.fields import TreeForeignKey
+# from mptt.models import MPTTModel
+
 from .services import from_cyrillic_to_eng
 
 
@@ -53,3 +56,27 @@ class City(models.Model):
         if not self.slug:
             self.slug = from_cyrillic_to_eng(str(self.name))
         super().save(*args, **kwargs)
+
+
+# class AbstractMPTTModel(MPTTModel):
+#     """
+#     Абстрактная, древовидная модель.
+#     Поля: text, parent, created, updated, deleted.
+#     """
+#     text = models.TextField('содержание', max_length=2000)
+#     created = models.DateTimeField('добавлено', auto_now_add=True)
+#     updated = models.DateTimeField('изменено', auto_now=True)
+#     deleted = models.BooleanField('удален', default=False)
+#     parent = TreeForeignKey(
+#         'self',
+#         on_delete=models.SET_NULL,
+#         null=True,
+#         blank=True,
+#         related_name='children'
+#     )
+#
+#     def __str__(self):
+#         return f'{self.text}'
+#
+#     class Meta:
+#         abstract = True

@@ -19,43 +19,52 @@ from django.contrib import admin
 from django.urls import path, include
 import debug_toolbar
 
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+   openapi.Info(
+      title='Portfolio API by Pashynskyi',
+      default_version='v1',
+      description='Docs to portfolio',
+      # terms_of_service="https://www.google.com/policies/terms/",
+      # contact=openapi.Contact(email="contact@snippets.local"),
+      # license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
+
 urlpatterns = [
     # Django admin
-    path('admin/', admin.site.urls),
-
-    # Local apps
+    path('admin/', admin.site.urls),  # Django admin
+    # Local apps.
     path('', include('base.urls')),
-
     path('accounts/', include('accounts.urls')),
-
     path('blog/', include('blog.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    # 1 URL для путешественника.
     path('travels/', include('travels.urls')),
-    # 2 URLs для магазина.
     path('products/', include('products.urls')),
     path('orders/', include('orders.urls')),
-    # 1 URL для CRM.
     path('crm/',  include('crm.urls')),
-    # 1 URL для LRM.
     path('lms/', include('lms.urls')),
-    # 1 URL для scraping.
     path('scraping/', include('scraping.urls')),
+    # API urls.
+    path('swagger(<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    path('api-auth/', include('rest_framework.urls')),
-    # path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
-
-    path('api/v1/', include('routers')),
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/', include('routers')),
+]
 
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
+    urlpatterns += path('__debug__/', include(debug_toolbar.urls)),

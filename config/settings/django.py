@@ -31,6 +31,9 @@ INSTALLED_APPS = [
     # Local
     'accounts.apps.AccountsConfig',  # Кастомная админка.
     'base.apps.BaseConfig',  # Приложение для общего барахла.
+    'posts.apps.PostsConfig',  # Приложение для постов пользователя.
+    'followers.apps.FollowersConfig',  # Подписчики.
+    'feeds.apps.FeedsConfig',  # Отбор контента для ленты.
     'blog.apps.BlogConfig',  # Блог.
     'travels.apps.TravelsConfig',  # Путешественник.
     'products.apps.ProductsConfig',  # Приложение с товарами.
@@ -52,10 +55,10 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'embed_video',  # Для видео.
-
+    'mptt',  # Для построения древовидных моделей(например вложенные комментарии).
+    'djoser',  # For user registration and authentication endpoints.
     'rest_framework',  # Для REST API.
-    # 'rest_framework_simplejwt',
-    'djoser',  # For user registration and authentication endpoints
+    'rest_framework_simplejwt',  # JWT authentication backend library.
     'drf_yasg',  # Для автодокументации API.
     'corsheaders',  # Для  управления CORS.
 
@@ -202,8 +205,9 @@ AUTHENTICATION_BACKENDS = (
 
 
 # Настройки email.
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", None)
+EMAIL_USE_TLS = bool(int(os.environ.get("DEBUG", default=1)))
 
 EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
 EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
