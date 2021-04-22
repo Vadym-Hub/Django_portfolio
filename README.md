@@ -101,11 +101,11 @@ $ docker-compose exec web python manage.py createsuperuser
 ## Description
 
 Description, structure of folder, issues and feature requests! 
-See [DESCRIPTION.md](https://github.com/Vadym-Hub/django_portfolio/blob/DESCRIPTION.md).
+See [DESCRIPTION.md](https://github.com/Vadym-Hub/django_portfolio/blob/master/DESCRIPTION.md).
 
 ----
 
-## ️ Links
+## Links
 
 - [Facebook](https://www.facebook.com/profile.php?id=100014867027947)
 - [Linkedin](https://www.linkedin.com/in/vadym-pashynskyi-a989bb1b2/)
