@@ -7,7 +7,7 @@ router = routers.SimpleRouter()
 
 urlpatterns = [
     path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
+    path('auth-jwt/', include('djoser.urls.jwt')),
     path('', include('accounts.api.urls')),
     path('posts/', include('posts.urls')),
     path('feeds/', include('feeds.urls')),

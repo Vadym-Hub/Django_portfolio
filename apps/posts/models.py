@@ -30,11 +30,11 @@ class Post(models.Model):
         verbose_name_plural = 'посты'
         ordering = ('-created',)
 
-    # def __str__(self):
-    #     return f'id {self.id}'
+    def __str__(self):
+        return f'id {self.id}'
 
     def __str__(self):
-        return {self.content}
+        return self.content
 
     def comments_count(self):
         """

@@ -6,7 +6,7 @@ from .models import Post, Comment
 
 class CommentSerializer(serializers.ModelSerializer):
     """
-    Добавление комментариев к посту.
+    Сериализатор для модели Comment.
     """
     class Meta:
         model = Comment
@@ -26,6 +26,9 @@ class CommentWithoutParentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.username')
 
     def get_text(self, obj):
+        """
+        Метод возвращает поле text=None если комментарий был удален.
+        """
         if obj.deleted:
             return None
         return obj.text
@@ -51,8 +54,6 @@ class PostSerializer(serializers.ModelSerializer):
     """
     author = serializers.ReadOnlyField(source='author.username')
     comments = CommentWithoutParentSerializer(many=True, read_only=True)
-    # comments_count = serializers.IntegerField(source="comments_count", read_only=True)
-    # votes_count = serializers.IntegerField(source="votes_count", read_only=True)
 
     class Meta:
         model = Post

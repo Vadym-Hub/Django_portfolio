@@ -26,8 +26,8 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
-INSTALLED_APPS = [
-    # Local
+
+PROJECT_APPS = [
     'accounts.apps.AccountsConfig',  # Кастомная админка.
     'base.apps.BaseConfig',  # Приложение для общего барахла.
     'posts.apps.PostsConfig',  # Приложение для постов пользователя.
@@ -40,15 +40,9 @@ INSTALLED_APPS = [
     'crm.apps.CrmConfig',  # (CRM) Система управления взаимоотношениями с клиентами.
     'lms.apps.LmsConfig',  # (LMS) Система управления обучением.
     'scraping.apps.ScrapingConfig',  # Сервис для скрапинга вакансий по ЯП.
+]
 
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    # Third-party
+THIRD_PARTY_APPS = [
     'crispy_forms',  # Для обработки расширенных/пользовательских форм.
     'taggit',  # Подсистема тегов (удалить)
     'ckeditor',
@@ -64,6 +58,18 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'storages',  # Чтоб крутить статику и медиа на Amazon S3.
 ]
+
+DJANGO_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
